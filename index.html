@@ -40,6 +40,7 @@
             <option value="student">Student</option>
             <option value="other">Other</option>
           </select>
+          <input type="text" id="other-title" placeholder="Your Job Role" />
         </fieldset>
 
         <fieldset class="shirt">
@@ -67,20 +68,25 @@
           <div id="colors-js-puns" class="">
             <label for="color">Color:</label>
             <select id="color">
-              <option value="cornflowerblue"
-                >Cornflower Blue (JS Puns shirt only)</option
-              >
-              <option value="darkslategrey"
-                >Dark Slate Grey (JS Puns shirt only)</option
-              >
-              <option value="gold">Gold (JS Puns shirt only)</option>
-              <option value="tomato">Tomato (I &#9829; JS shirt only)</option>
-              <option value="steelblue"
-                >Steel Blue (I &#9829; JS shirt only)</option
-              >
-              <option value="dimgrey"
-                >Dim Grey (I &#9829; JS shirt only)</option
-              >
+              <option value="select-one">Select Color</option>
+              <optgroup id="js-puns" label="JS Puns Shirts">
+                <option value="cornflowerblue"
+                  >Cornflower Blue (JS Puns shirt only)</option
+                >
+                <option value="darkslategrey"
+                  >Dark Slate Grey (JS Puns shirt only)</option
+                >
+                <option value="gold">Gold (JS Puns shirt only)</option>
+              </optgroup>
+              <optgroup id="js-hearts" label="JS Heart Shirts">
+                <option value="tomato">Tomato (I &#9829; JS shirt only)</option>
+                <option value="steelblue"
+                  >Steel Blue (I &#9829; JS shirt only)</option
+                >
+                <option value="dimgrey"
+                  >Dim Grey (I &#9829; JS shirt only)</option
+                >
+              </optgroup>
             </select>
           </div>
         </fieldset>
@@ -88,31 +94,32 @@
         <fieldset class="activities">
           <legend>Register for Activities</legend>
           <label
-            ><input type="checkbox" name="all" /> Main Conference — $200</label
+            ><input type="checkbox" id="all" name="all" /> Main Conference —
+            $200</label
           >
           <label
-            ><input type="checkbox" name="js-frameworks" /> JavaScript
-            Frameworks Workshop — Tuesday 9am-12pm, $100</label
+            ><input type="checkbox" id="js-frameworks" name="js-frameworks" />
+            JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100</label
           >
           <label
-            ><input type="checkbox" name="js-libs" /> JavaScript Libraries
-            Workshop — Tuesday 1pm-4pm, $100</label
+            ><input type="checkbox" id="js-libs" name="js-libs" /> JavaScript
+            Libraries Workshop — Tuesday 1pm-4pm, $100</label
           >
           <label
-            ><input type="checkbox" name="express" /> Express Workshop — Tuesday
-            9am-12pm, $100</label
+            ><input type="checkbox" id="express" name="express" /> Express
+            Workshop — Tuesday 9am-12pm, $100</label
           >
           <label
-            ><input type="checkbox" name="node" /> Node.js Workshop — Tuesday
-            1pm-4pm, $100</label
+            ><input type="checkbox" id="node" name="node" /> Node.js Workshop —
+            Tuesday 1pm-4pm, $100</label
           >
           <label
-            ><input type="checkbox" name="build-tools" /> Build tools Workshop —
-            Wednesday 9am-12pm, $100</label
+            ><input type="checkbox" id="build-tools" name="build-tools" /> Build
+            tools Workshop — Wednesday 9am-12pm, $100</label
           >
           <label
-            ><input type="checkbox" name="npm" /> npm Workshop — Wednesday
-            1pm-4pm, $100</label
+            ><input type="checkbox" id="npm" name="npm" /> npm Workshop —
+            Wednesday 1pm-4pm, $100</label
           >
         </fieldset>
         <fieldset>
