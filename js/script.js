@@ -23,22 +23,17 @@ const $steelBlue = $("#color option").eq(5);
 const $dimGrey = $("#color option").eq(6);
 const $js_hearts_header = $("#js-hearts");
 
+//// ”Register for Activities” section variables
+let $main_conf = $("#all");
+let $js_frameworks = $("#js-frameworks"); // 9am - 12pm
+let $js_libs = $("#js-libs"); // 1pm - 4pm
+let $express = $("#express"); // 9am - 12pm
+let $node = $("#node"); // 1pm - 4pm
+let $build_tools = $("#build-tools");
+let $npm = $("#npm");
+
 // Name input is focused on by default on load
 $($nameInput).focus();
-
-// ”Job Role” section
-
-// hides text field from view on load
-$otherTitle.hide();
-// listens for change on option then slides down the text input field when other option is chosen and hides it if it's not.
-$("#title").on("change", event => {
-  const e = event.target.value;
-  if (e === "other") {
-    $otherTitle.slideDown(500);
-  } else {
-    $otherTitle.hide();
-  }
-});
 
 // ”T-Shirt Info” section
 // For the T-Shirt "Color" menu, only display the color options that match the design selected in the "Design" menu.
@@ -54,12 +49,14 @@ $steelBlue.hide();
 $dimGrey.hide();
 $js_hearts_header.hide();
 
-/*
-Function that allows user to toggle between options and only see colors that match that option
+/*************** 
+ start of functions 
 */
-const toggleOptions = () => {
+
+//Function that allows user to toggle between options and only see colors that match that option
+
+const toggleShirts = () => {
   if ($("#design").val() === "js puns") {
-    console.log($("#design").val());
     $cornFlowerblue.show();
     $darkSlateGrey.show();
     $gold.show();
@@ -72,7 +69,6 @@ const toggleOptions = () => {
   }
 
   if ($("#design").val() === "heart js") {
-    console.log($("#design").val());
     $tomato.show();
     $steelBlue.show();
     $dimGrey.show();
@@ -84,28 +80,7 @@ const toggleOptions = () => {
     $js_hearts_header.hide();
   }
 };
-
-// function above only happens 'on' a option change
-$("#design").on("change", toggleOptions);
-
-// Some events are at the same day and time as others. If the user selects a workshop, don't allow selection of a workshop at the same day and time -- you should disable the checkbox and visually indicate that the workshop in the competing time slot isn't available.
-// When a user unchecks an activity, make sure that competing activities (if there are any) are no longer disabled.
-// As a user selects activities, a running total should display below the list of checkboxes. For example, if the user selects "Main Conference", then Total: $200 should appear. If they add 1 workshop, the total should change to Total: $300.
-
-//// ”Register for Activities” section variables
-const $main_conf = $("#all");
-const $js_frameworks = $("#js-frameworks"); // 9am - 12pm
-const $js_libs = $("#js-libs"); // 1pm - 4pm
-const $express = $("#express"); // 9am - 12pm
-const $node = $("#node"); // 1pm - 4pm
-const $build_tools = $("#build-tools");
-const $npm = $("#npm");
-
-// loops through all of the checkbox elements
-const $checkboxes = $(".activities input").each((index, checkbox) => {
-  console.log(index, checkbox);
-});
-
+// disables time slots that match the time slot that the user chooses then adds a strike through to unavailable selection
 const checkStatus = () => {
   if ($js_frameworks.is(":checked")) {
     $express.prop("disabled", true);
@@ -133,8 +108,115 @@ const checkStatus = () => {
   }
 };
 
-$checkboxes.on("click", checkStatus);
+// if checkbox is clicked add the value to the total if it's unchecked reduce the total by the value item amount and displays a running total
+const getTotalPrice = () => {
+  let total = 0;
 
+  if ($main_conf.is(":checked")) {
+    total += parseInt($main_conf.val());
+  } else if ($main_conf.is(":checked")) {
+    total -= parseInt($main_conf.val());
+  }
+
+  if ($js_frameworks.is(":checked")) {
+    total += parseInt($js_frameworks.val());
+  } else if ($js_frameworks.is(":checked")) {
+    total -= parseInt($js_frameworks.val());
+  }
+
+  if ($js_libs.is(":checked")) {
+    total += parseInt($js_libs.val());
+  } else if ($js_libs.is(":checked")) {
+    total -= parseInt($js_libs.val());
+  }
+
+  if ($express.is(":checked")) {
+    total += parseInt($express.val());
+  } else if ($express.is(":checked")) {
+    total -= parseInt($express.val());
+  }
+
+  if ($node.is(":checked")) {
+    total += parseInt($node.val());
+  } else if ($node.is(":checked")) {
+    total -= parseInt($express.val());
+  }
+
+  if ($build_tools.is(":checked")) {
+    total += parseInt($build_tools.val());
+  } else if ($build_tools.is(":checked")) {
+    total -= parseInt($express.val());
+  }
+
+  if ($npm.is(":checked")) {
+    total += parseInt($npm.val());
+  } else if ($npm.is(":checked")) {
+    total -= parseInt($express.val());
+  }
+  $("#amount").html(`Your total is $: ${total}`);
+  console.log(total);
+};
+
+// ensures only the correct payment information shows for the payment type selected
+const togglePayment = () => {
+  const $payment = $("#payment").val();
+
+  if ($payment === "paypal") {
+    $("#credit-card").hide();
+    $("#bitcoin").hide();
+    $("#paypal").slideDown(500);
+  } else if ($payment === "bitcoin") {
+    $("#paypal").hide();
+    $("#credit-card").hide();
+    $("#bitcoin").slideDown(500);
+  } else if ($payment === "credit card") {
+    $("#credit-card").slideDown(500);
+    $("#paypal").hide();
+    $("#bitcoin").hide();
+  } else if ($payment === "select_method") {
+    $("#credit-card").hide();
+    $("#bitcoin").hide();
+    $("#paypal").hide();
+  }
+};
+
+/*************** 
+ End of functions 
+*/
+
+/*************** 
+ Start of event listeners 
+*/
+
+// On payment method change the action occurs
+$("#payment").on("change", togglePayment);
+// toggle function only happens 'on' a option change
+$("#design").on("change", toggleShirts);
+// loops through all of the checkbox elements
+const $checkboxes = $(".activities input").each((index, checkbox) => {
+  console.log(index, checkbox);
+});
+// on click only allows you to select options that are not at the same time slot
+$checkboxes.on("click", checkStatus);
+// changes price based on what user clicks on
+$checkboxes.on("click", getTotalPrice);
+
+// hides text field from view on load
+$otherTitle.hide();
+// listens for change on option then slides down the text input field when other option is chosen and hides it if it's not.
+$("#title").on("change", event => {
+  const e = event.target.value;
+  if (e === "other") {
+    $otherTitle.slideDown(500);
+  } else {
+    $otherTitle.hide();
+  }
+});
+
+// keep credit card method selected as default
+$("#payment option")
+  .eq(1)
+  .prop("selected", true);
 // "Payment Info" section
 // Display payment sections based on the payment option chosen in the select menu.
 // The "Credit Card" payment option should be selected by default. Display the #credit-card div, and hide the "PayPal" and "Bitcoin" information. Payment option in the select menu should match the payment option displayed on the page.
