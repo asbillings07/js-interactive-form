@@ -228,21 +228,21 @@ const checkForCorrectInfo = () => {
   }
   if ($payment === "credit card" && $creditCard.val() === "") {
     $creditCard.css("border-color", "red");
-    alert("credit card info can not be blank");
+    alert("Please enter a credit card number");
     $("form").submit(e => {
       e.preventDefault();
     });
   }
   if ($payment === "credit card" && $zipCode.val() === "") {
     $zipCode.css("border-color", "red");
-    alert("Zipcode can not be blank");
+    alert("Please enter a zip code");
     $("form").submit(e => {
       e.preventDefault();
     });
   }
   if ($payment === "credit card" && $cvv.val() === "") {
     $cvv.css("border-color", "red");
-    alert("Cvv can not be blank");
+    alert("Please enter a cvv");
     $("form").submit(e => {
       e.preventDefault();
     });
@@ -334,7 +334,7 @@ $("#payment option")
 $nameInput.after(`<span class="error">Must be a full name</span>`);
 $emailInput.after(`<span class="error">Must be a valid email address</span>`);
 $creditCard.after(
-  `<span class="error">Must be a valid credit card number</span>`
+  `<span class="error">Please enter a number that is between 13 and 16 digits long.</span>`
 );
 $zipCode.after(`<span class="error">Must be a valid zipcode</span>`);
 $cvv.after(`<span class="error">Must be a valid cvv</span>`);
