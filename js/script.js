@@ -205,35 +205,54 @@ const isValidCVV = cvv => {
 
 const isCreditCardFilled = text => {};
 
-// checkes to see if inputs are empty, if they are, then border turns red
-const checkForNilBoxes = () => {
+// checkes to see if inputs are empty or correct, if they are, then border turns red
+const checkForCorrectInfo = () => {
   const $payment = $("#payment").val();
 
   if ($nameInput.val() === "") {
     $nameInput.css("border-color", "red");
     alert("Name field can not be blank");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
   }
-  if ($emailInput.val() === "") {
+  if (
+    $emailInput.val() === "" &&
+    $emailInput.val() === createListener(isValidEmail)
+  ) {
     $emailInput.css("border-color", "red");
-    alert("Email field can not be blank");
+    alert("Email field must be formatted correctly i.e (example@email.com)");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
   }
   if ($payment === "credit card" && $creditCard.val() === "") {
     $creditCard.css("border-color", "red");
     alert("credit card info can not be blank");
-    // append to the top of the page so user sees what still needs to be filled out
-    //Make sure at least one checkbox is checked
+    $("form").submit(e => {
+      e.preventDefault();
+    });
   }
   if ($payment === "credit card" && $zipCode.val() === "") {
     $zipCode.css("border-color", "red");
     alert("Zipcode can not be blank");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
   }
   if ($payment === "credit card" && $cvv.val() === "") {
     $cvv.css("border-color", "red");
     alert("Cvv can not be blank");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
   }
   if ($checkboxes.is(":checked") === false) {
     $checkboxes.parent().css("color", "red");
     alert("please choose an activity");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
   }
 };
 
@@ -252,7 +271,6 @@ function createListener(validator) {
     const valid = validator(text);
     const showTip = text !== "" && !valid;
     const tooltip = e.target.nextElementSibling;
-    console.log(tooltip);
     showOrHideTip(showTip, tooltip);
   };
 }
@@ -262,7 +280,7 @@ function createListener(validator) {
 */
 
 // submit button 'register'
-$("button").on("click", checkForNilBoxes);
+$("button").on("click", checkForCorrectInfo);
 
 // name input
 $nameInput.on("input", createListener(isValidName));
@@ -311,10 +329,6 @@ $("#bitcoin").hide();
 $("#payment option")
   .eq(0)
   .prop("disabled", true);
-
-$("form").submit(e => {
-  e.preventDefault();
-});
 
 // validator messages
 $nameInput.after(`<span class="error">Must be a full name</span>`);
