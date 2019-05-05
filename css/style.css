@@ -1,6 +1,13 @@
 /* ================================= 
   Base Element Styles
 ==================================== */
+.error {
+  color: red;
+}
+#amount {
+  color: black;
+  font-weight: bold;
+}
 .strike {
   text-decoration: line-through;
   color: gray;
