@@ -9,6 +9,9 @@ const $nameInput = $("#name");
 const $emailInput = $("#mail");
 const $otherTitle = $("#other-title");
 const $designOption = $("#design");
+const $creditCard = $("#cc-num");
+const $zipCode = $("#zip");
+const $cvv = $("#cvv");
 
 // js puns variables
 const $cornFlowerblue = $("#color option").eq(1);
@@ -50,7 +53,7 @@ $dimGrey.hide();
 $js_hearts_header.hide();
 
 /*************** 
- start of functions 
+ Form functions 
 */
 
 //Function that allows user to toggle between options and only see colors that match that option
@@ -154,13 +157,11 @@ const getTotalPrice = () => {
     total -= parseInt($express.val());
   }
   $("#amount").html(`Your total is $: ${total}`);
-  console.log(total);
 };
 
 // ensures only the correct payment information shows for the payment type selected
 const togglePayment = () => {
   const $payment = $("#payment").val();
-
   if ($payment === "paypal") {
     $("#credit-card").hide();
     $("#bitcoin").hide();
@@ -173,29 +174,106 @@ const togglePayment = () => {
     $("#credit-card").slideDown(500);
     $("#paypal").hide();
     $("#bitcoin").hide();
-  } else if ($payment === "select_method") {
-    $("#credit-card").hide();
-    $("#bitcoin").hide();
-    $("#paypal").hide();
   }
 };
 
 /*************** 
- End of functions 
+ Validator functions 
 */
+
+const isValidName = name => {
+  return /^[a-z]$/i.test(name);
+};
+
+const isValidEmail = email => {
+  return /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{3}$/i.test(email);
+};
+
+const isValidCreditCard = creditCard => {
+  return /^[3|4|5|6]([0-9]{15}$|[0-9]{12}$|[0-9]{13}$|[0-9]{14}$)/.test(
+    creditCard
+  );
+};
+
+const isValidZipCode = zipcode => {
+  return /^[0-9]{5}$/.test(zipcode);
+};
+
+const isValidCVV = cvv => {
+  return / ^[0-9]{3}$/.test(cvv);
+};
+
+const isCreditCardFilled = text => {};
+
+const checkForNilBoxes = () => {
+  const $payment = $("#payment").val();
+
+  if ($nameInput.val() === "") {
+    $nameInput.css("border-color", "red");
+    console.log("Name field can not be blank");
+  }
+  if ($emailInput.val() === "") {
+    $emailInput.css("border-color", "red");
+    console.log("Please enter an email");
+  }
+  if ($payment === "credit card" && $creditCard.val() === "") {
+    $creditCard.css("border-color", "red");
+    console.log("Please enter a valid credit card number ");
+    // append to the top of the page so user sees what still needs to be filled out
+    //Make sure at least one checkbox is checked
+  }
+  if ($payment === "credit card" && $zipCode.val() === "") {
+    $zipCode.css("border-color", "red");
+    console.log("Please enter a valid zipcode");
+  }
+  if ($payment === "credit card" && $cvv.val() === "") {
+    $cvv.css("border-color", "red");
+    console.log("Please enter a valid cvv");
+  }
+};
+
+const showOrHideTip = (show, element) => {
+  // show element when show is true, hide when false
+  if (show) {
+    element.style.display = "";
+  } else {
+    element.style.display = "none";
+  }
+};
+
+function createListener(validator) {
+  return e => {
+    const text = e.target.value;
+    const valid = validator(text);
+    const showTip = text !== "" && !valid;
+    const tooltip = e.target.nextElementSibling;
+    console.log(tooltip);
+    showOrHideTip(showTip, tooltip);
+  };
+}
 
 /*************** 
  Start of event listeners 
 */
+
+$("button").on("click", checkForNilBoxes);
+
+$nameInput.on("input", createListener(isValidName));
+
+$emailInput.on("input", createListener(isValidEmail));
+
+$creditCard.on("input", createListener(isValidCreditCard));
+
+$zipCode.on("input", createListener(isValidZipCode));
+
+$cvv.on("input", createListener(isValidCVV));
 
 // On payment method change the action occurs
 $("#payment").on("change", togglePayment);
 // toggle function only happens 'on' a option change
 $("#design").on("change", toggleShirts);
 // loops through all of the checkbox elements
-const $checkboxes = $(".activities input").each((index, checkbox) => {
-  console.log(index, checkbox);
-});
+const $checkboxes = $(".activities input").each((index, checkbox) => {});
 // on click only allows you to select options that are not at the same time slot
 $checkboxes.on("click", checkStatus);
 // changes price based on what user clicks on
@@ -217,13 +295,18 @@ $("#title").on("change", event => {
 $("#payment option")
   .eq(1)
   .prop("selected", true);
-// "Payment Info" section
-// Display payment sections based on the payment option chosen in the select menu.
-// The "Credit Card" payment option should be selected by default. Display the #credit-card div, and hide the "PayPal" and "Bitcoin" information. Payment option in the select menu should match the payment option displayed on the page.
-// When a user selects the "PayPal" payment option, the PayPal information should display, and the credit card and “Bitcoin” information should be hidden.
-// When a user selects the "Bitcoin" payment option, the Bitcoin information should display, and the credit card and “PayPal” information should be hidden.
-// NOTE: The user should not be able to select the "Select Payment Method" option from the payment select menu, because the user should not be able to submit the form without a chosen payment option.
 
+$("#paypal").hide();
+$("#bitcoin").hide();
+
+// disables the 'select payment method' button since that is not a payment method they should be able to choose from
+$("#payment option")
+  .eq(0)
+  .prop("disabled", true);
+
+$("form").submit(e => {
+  e.preventDefault();
+});
 // Form validation
 // If any of the following validation errors exist, prevent the user from submitting the form:
 // Name field can't be blank.
@@ -234,8 +317,6 @@ $("#payment option")
 // The Zip Code field should accept a 5-digit number.
 // The CVV should only accept a number that is exactly 3 digits long.
 // NOTE: Don't rely on the built in HTML5 validation by adding the required attribute to your DOM elements. You need to actually create your own custom validation checks and error messages.
-
-// NOTE: Avoid using snippets or plugins for this project. To get the most out of the experience, you should be writing all of your own code for your own custom validation.
 
 // NOTE: Make sure your validation is only validating Credit Card info if Credit Card is the selected payment method.
 
@@ -249,8 +330,3 @@ $("#payment option")
 // Zip Code (Only if Credit Card payment method is selected)
 // CVV (Only if Credit Card payment method is selected)
 // Note: Error messages or indications should not be visible by default. They should only show upon submission, or after some user interaction.
-
-// Form works without JavaScript - Progressive Enhancement
-// The user should still have access to all form fields and payment information if JS isn't working for whatever reason. For example, when the JS is removed from the project:
-// The “Other” text field under the "Job Role" section should be visible
-// All information for Bitcoin, PayPal or Credit Card payments should be visible.
