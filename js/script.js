@@ -12,6 +12,7 @@ const $designOption = $("#design");
 const $creditCard = $("#cc-num");
 const $zipCode = $("#zip");
 const $cvv = $("#cvv");
+const $colorsDiv = $("#colors-js-puns");
 
 // js puns variables
 const $cornFlowerblue = $("#color option").eq(1);
@@ -51,6 +52,8 @@ $tomato.hide();
 $steelBlue.hide();
 $dimGrey.hide();
 $js_hearts_header.hide();
+// hides T-shirt colors by default
+$colorsDiv.hide();
 
 /*************** 
  Form functions 
@@ -60,11 +63,13 @@ $js_hearts_header.hide();
 
 const toggleShirts = () => {
   if ($("#design").val() === "js puns") {
+    $colorsDiv.show();
     $cornFlowerblue.show();
     $darkSlateGrey.show();
     $gold.show();
     $js_puns_header.show();
   } else {
+    $colorsDiv.show();
     $cornFlowerblue.hide();
     $darkSlateGrey.hide();
     $gold.hide();
@@ -222,7 +227,7 @@ const checkForCorrectInfo = () => {
     $("form").submit(e => {
       e.preventDefault();
     });
-  } else if ($emailInput.val() === createListener(isValidEmail)) {
+  } else if ($emailInput.val() !== isValidEmail) {
     $emailInput.css("border-color", "red");
     alert("Email field must be formatted correctly i.e (example@email.com)");
     $("form").submit(e => {
@@ -238,7 +243,7 @@ const checkForCorrectInfo = () => {
     });
   } else if (
     $payment === "credit card" &&
-    $creditCard.val() === createListener(isValidCreditCard)
+    $creditCard.val() !== isValidCreditCard
   ) {
     $creditCard.css("border-color", "red");
     alert("Please enter a valid credit card number between 13 and 16 digits");
