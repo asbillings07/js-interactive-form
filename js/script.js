@@ -216,16 +216,20 @@ const checkForCorrectInfo = () => {
       e.preventDefault();
     });
   }
-  if (
-    $emailInput.val() === "" &&
-    $emailInput.val() === createListener(isValidEmail)
-  ) {
+  if ($emailInput.val() === "") {
+    $emailInput.css("border-color", "red");
+    alert("Email field can not be blank");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
+  } else if ($emailInput.val() !== createListener(isValidEmail)) {
     $emailInput.css("border-color", "red");
     alert("Email field must be formatted correctly i.e (example@email.com)");
     $("form").submit(e => {
       e.preventDefault();
     });
   }
+
   if ($payment === "credit card" && $creditCard.val() === "") {
     $creditCard.css("border-color", "red");
     alert("Please enter a credit card number");
