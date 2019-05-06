@@ -222,7 +222,7 @@ const checkForCorrectInfo = () => {
     $("form").submit(e => {
       e.preventDefault();
     });
-  } else if ($emailInput.val() !== createListener(isValidEmail)) {
+  } else if ($emailInput.val() === createListener(isValidEmail)) {
     $emailInput.css("border-color", "red");
     alert("Email field must be formatted correctly i.e (example@email.com)");
     $("form").submit(e => {
@@ -233,6 +233,15 @@ const checkForCorrectInfo = () => {
   if ($payment === "credit card" && $creditCard.val() === "") {
     $creditCard.css("border-color", "red");
     alert("Please enter a credit card number");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
+  } else if (
+    $payment === "credit card" &&
+    $creditCard.val() === createListener(isValidCreditCard)
+  ) {
+    $creditCard.css("border-color", "red");
+    alert("Please enter a valid credit card number between 13 and 16 digits");
     $("form").submit(e => {
       e.preventDefault();
     });
