@@ -65,11 +65,13 @@ const toggleShirts = () => {
   if ($("#design").val() === "js puns") {
     $colorsDiv.show();
     $cornFlowerblue.show();
+    $cornFlowerblue.prop("selected", "selected");
     $darkSlateGrey.show();
     $gold.show();
     $js_puns_header.show();
   } else {
     $colorsDiv.show();
+
     $cornFlowerblue.hide();
     $darkSlateGrey.hide();
     $gold.hide();
@@ -78,6 +80,7 @@ const toggleShirts = () => {
 
   if ($("#design").val() === "heart js") {
     $tomato.show();
+    $tomato.prop("selected", "selected");
     $steelBlue.show();
     $dimGrey.show();
     $js_hearts_header.show();
