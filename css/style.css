@@ -4,6 +4,9 @@
 .error {
   color: red;
 }
+.inputError {
+  border-color: red;
+}
 #amount {
   color: black;
   font-weight: bold;
@@ -79,12 +82,14 @@ input[type="text"],
 input[type="email"],
 legend {
   width: 100%;
+  margin-bottom: 0.3em;
 }
 
 label {
   color: #000;
   display: block;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.3em;
+  margin-top: 1em;
 }
 
 input,
@@ -110,13 +115,14 @@ input:focus {
 input[type="checkbox"],
 input[type="radio"] {
   display: inline-block;
+  margin-right: 0.3em;
 }
 
 button {
   color: #fff;
   padding: 0.55em 1.25em;
   background: #22627e;
-  margin: 1.25em 0 0.5em;
+  margin: 1.25em 0px 1.5em 0.7em !important;
   cursor: pointer;
 }
 
