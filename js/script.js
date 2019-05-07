@@ -222,8 +222,7 @@ const checkForCorrectInfo = () => {
     $("form").submit(e => {
       e.preventDefault();
     });
-  }
-  if ($emailInput.val() === "") {
+  } else if ($emailInput.val() === "") {
     $emailInput.toggleClass("inputError");
     alert("Email field can not be blank");
     $("form").submit(e => {
@@ -236,6 +235,7 @@ const checkForCorrectInfo = () => {
       e.preventDefault();
     });
   }
+
   if ($payment === "credit card" && $creditCard.val() === "") {
     $creditCard.toggleClass("inputError");
     alert("Please enter a credit card number");
@@ -274,25 +274,6 @@ const checkForCorrectInfo = () => {
     $("form").submit(e => {
       e.preventDefault();
     });
-  }
-  /// add if statement that checks if everything is right, is so submit the form.
-
-  if (
-    isValidName === true &&
-    isValidEmail === true &&
-    isValidCreditCard === true &&
-    isValidZipCode === true &&
-    isValidCVV === true &&
-    $checkboxes.is(":checked") === true
-  ) {
-    $nameInput.toggleClass("inputError");
-    $emailInput.toggleClass("inputError");
-    $zipCode.toggleClass("inputError");
-    $creditCard.toggleClass("inputError");
-    $cvv.toggleClass("inputError");
-    $checkboxes.parent().css("color", "black");
-    $("form").submit();
-    console.log("form submitted");
   }
 };
 
