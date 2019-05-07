@@ -71,7 +71,6 @@ const toggleShirts = () => {
     $js_puns_header.show();
   } else {
     $colorsDiv.show();
-
     $cornFlowerblue.hide();
     $darkSlateGrey.hide();
     $gold.hide();
@@ -218,51 +217,52 @@ const checkForCorrectInfo = () => {
   const $payment = $("#payment").val();
 
   if ($nameInput.val() === "") {
-    $nameInput.css("border-color", "red");
+    $nameInput.toggleClass("inputError");
     alert("Name field can not be blank");
     $("form").submit(e => {
       e.preventDefault();
     });
   }
   if ($emailInput.val() === "") {
-    $emailInput.css("border-color", "red");
+    $emailInput.toggleClass("inputError");
     alert("Email field can not be blank");
     $("form").submit(e => {
       e.preventDefault();
     });
-  } else if ($emailInput.val() !== isValidEmail) {
-    $emailInput.css("border-color", "red");
+  } else if (isValidEmail($emailInput.val()) === false) {
+    $emailInput.toggleClass("inputError");
     alert("Email field must be formatted correctly i.e (example@email.com)");
     $("form").submit(e => {
       e.preventDefault();
     });
   }
-
   if ($payment === "credit card" && $creditCard.val() === "") {
-    $creditCard.css("border-color", "red");
+    $creditCard.toggleClass("inputError");
     alert("Please enter a credit card number");
     $("form").submit(e => {
       e.preventDefault();
     });
   } else if (
     $payment === "credit card" &&
-    $creditCard.val() !== isValidCreditCard
+    isValidCreditCard($creditCard.val()) === false
   ) {
-    $creditCard.css("border-color", "red");
+    $creditCard.toggleClass("inputError");
     alert("Please enter a valid credit card number between 13 and 16 digits");
     $("form").submit(e => {
       e.preventDefault();
     });
   }
+
   if ($payment === "credit card" && $zipCode.val() === "") {
-    $zipCode.css("border-color", "red");
+    $zipCode.toggleClass("inputError");
     alert("Please enter a zip code");
     $("form").submit(e => {
       e.preventDefault();
     });
   }
+
   if ($payment === "credit card" && $cvv.val() === "") {
-    $cvv.css("border-color", "red");
+    $cvv.toggleClass("inputError");
     alert("Please enter a cvv");
     $("form").submit(e => {
       e.preventDefault();
@@ -274,6 +274,25 @@ const checkForCorrectInfo = () => {
     $("form").submit(e => {
       e.preventDefault();
     });
+  }
+  /// add if statement that checks if everything is right, is so submit the form.
+
+  if (
+    isValidName === true &&
+    isValidEmail === true &&
+    isValidCreditCard === true &&
+    isValidZipCode === true &&
+    isValidCVV === true &&
+    $checkboxes.is(":checked") === true
+  ) {
+    $nameInput.toggleClass("inputError");
+    $emailInput.toggleClass("inputError");
+    $zipCode.toggleClass("inputError");
+    $creditCard.toggleClass("inputError");
+    $cvv.toggleClass("inputError");
+    $checkboxes.parent().css("color", "black");
+    $("form").submit();
+    console.log("form submitted");
   }
 };
 
