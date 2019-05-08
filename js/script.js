@@ -292,7 +292,20 @@ const validateCheckboxesOnSubmit = () => {
 };
 
 const submitFormIfValid = () => {
+  const $payment = $("#payment").val();
   if (
+    (isValidName($nameInput.val()) === true &&
+      isValidEmail($emailInput.val()) === true &&
+      $checkboxes.is(":checked") === true &&
+      $payment === "paypal") ||
+    $payment === "bitcoin"
+  ) {
+    $nameInput.toggleClass("inputError");
+    $emailInput.toggleClass("inputError");
+    $("form").submit();
+    console.log("form submitted");
+    location.reload(true);
+  } else if (
     isValidName($nameInput.val()) === true &&
     isValidEmail($emailInput.val()) === true &&
     isValidCreditCard($creditCard.val()) === true &&
@@ -406,5 +419,3 @@ $cvv.after(`<span class="error">Must be a valid cvv</span>`);
 
 // hides all validator messages by default
 $(".error").hide();
-
-$("form").on("submit", "button", () => {});
