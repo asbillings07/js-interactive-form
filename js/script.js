@@ -13,6 +13,7 @@ const $creditCard = $("#cc-num");
 const $zipCode = $("#zip");
 const $cvv = $("#cvv");
 const $colorsDiv = $("#colors-js-puns");
+const $payment = $("#payment").val();
 
 // js puns variables
 const $cornFlowerblue = $("#color option").eq(1);
@@ -210,19 +211,24 @@ const isValidCVV = cvv => {
   return /^[0-9]{3}$/.test(cvv);
 };
 
-const isCreditCardFilled = text => {};
-
-// checkes to see if inputs are empty or correct, if they are, then border turns red
-const checkForCorrectInfo = () => {
-  const $payment = $("#payment").val();
-
-  if ($nameInput.val() === "") {
+const validateNameOnSubmit = () => {
+  if (isValidName($nameInput.val()) === false) {
+    $nameInput.toggleClass("inputError");
+    alert("Name must be formatted correctly");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
+  } else if ($nameInput.val() === "") {
     $nameInput.toggleClass("inputError");
     alert("Name field can not be blank");
     $("form").submit(e => {
       e.preventDefault();
     });
-  } else if ($emailInput.val() === "") {
+  }
+};
+
+const validateEmailOnSubmit = () => {
+  if ($emailInput.val() === "") {
     $emailInput.toggleClass("inputError");
     alert("Email field can not be blank");
     $("form").submit(e => {
@@ -235,7 +241,10 @@ const checkForCorrectInfo = () => {
       e.preventDefault();
     });
   }
+};
 
+const validateCreditCardOnSubmit = () => {
+  const $payment = $("#payment").val();
   if ($payment === "credit card" && $creditCard.val() === "") {
     $creditCard.toggleClass("inputError");
     alert("Please enter a credit card number");
@@ -252,7 +261,10 @@ const checkForCorrectInfo = () => {
       e.preventDefault();
     });
   }
+};
 
+const validateZipCodeOnSubmit = () => {
+  const $payment = $("#payment").val();
   if ($payment === "credit card" && $zipCode.val() === "") {
     $zipCode.toggleClass("inputError");
     alert("Please enter a zip code");
@@ -260,7 +272,6 @@ const checkForCorrectInfo = () => {
       e.preventDefault();
     });
   }
-
   if ($payment === "credit card" && $cvv.val() === "") {
     $cvv.toggleClass("inputError");
     alert("Please enter a cvv");
@@ -268,6 +279,9 @@ const checkForCorrectInfo = () => {
       e.preventDefault();
     });
   }
+};
+
+const validateCheckboxesOnSubmit = () => {
   if ($checkboxes.is(":checked") === false) {
     $checkboxes.parent().css("color", "red");
     alert("please choose an activity");
@@ -275,6 +289,36 @@ const checkForCorrectInfo = () => {
       e.preventDefault();
     });
   }
+};
+
+const submitFormIfValid = () => {
+  if (
+    isValidName($nameInput.val()) === true &&
+    isValidEmail($emailInput.val()) === true &&
+    isValidCreditCard($creditCard.val()) === true &&
+    isValidZipCode($zipCode.val()) === true &&
+    isValidCVV($cvv.val()) === true &&
+    $checkboxes.is(":checked") === true
+  ) {
+    $nameInput.toggleClass("inputError");
+    $emailInput.toggleClass("inputError");
+    $creditCard.toggleClass("inputError");
+    $zipCode.toggleClass("inputError");
+    $cvv.toggleClass("inputError");
+    $("form").submit();
+    console.log("form submitted");
+    location.reload(true);
+  }
+};
+
+// checkes to see if inputs are empty or correct, if they are, then border turns red
+const checkForCorrectInfo = () => {
+  validateNameOnSubmit();
+  validateEmailOnSubmit();
+  validateCreditCardOnSubmit();
+  validateZipCodeOnSubmit();
+  validateCheckboxesOnSubmit();
+  submitFormIfValid();
 };
 
 const showOrHideTip = (show, element) => {
@@ -362,3 +406,5 @@ $cvv.after(`<span class="error">Must be a valid cvv</span>`);
 
 // hides all validator messages by default
 $(".error").hide();
+
+$("form").on("submit", "button", () => {});
