@@ -16,6 +16,7 @@ const $colorsDiv = $("#colors-js-puns");
 const $payment = $("#payment").val();
 
 // js puns variables
+const $selectOne = $("#color option").eq(0);
 const $cornFlowerblue = $("#color option").eq(1);
 const $darkSlateGrey = $("#color option").eq(2);
 const $gold = $("#color option").eq(3);
@@ -211,6 +212,7 @@ const isValidCVV = cvv => {
   return /^[0-9]{3}$/.test(cvv);
 };
 
+// Validation rule for name
 const validateNameOnSubmit = () => {
   if (isValidName($nameInput.val()) === false) {
     $nameInput.toggleClass("inputError");
@@ -226,7 +228,7 @@ const validateNameOnSubmit = () => {
     });
   }
 };
-
+// Validation rule for email
 const validateEmailOnSubmit = () => {
   if ($emailInput.val() === "") {
     $emailInput.toggleClass("inputError");
@@ -242,7 +244,7 @@ const validateEmailOnSubmit = () => {
     });
   }
 };
-
+// Validation rule for credit card
 const validateCreditCardOnSubmit = () => {
   const $payment = $("#payment").val();
   if ($payment === "credit card" && $creditCard.val() === "") {
@@ -262,7 +264,7 @@ const validateCreditCardOnSubmit = () => {
     });
   }
 };
-
+// Validation rule for zipcode
 const validateZipCodeOnSubmit = () => {
   const $payment = $("#payment").val();
   if ($payment === "credit card" && $zipCode.val() === "") {
@@ -280,7 +282,7 @@ const validateZipCodeOnSubmit = () => {
     });
   }
 };
-
+// Validation rule for checkboxes
 const validateCheckboxesOnSubmit = () => {
   if ($checkboxes.is(":checked") === false) {
     $checkboxes.parent().css("color", "red");
@@ -290,7 +292,7 @@ const validateCheckboxesOnSubmit = () => {
     });
   }
 };
-
+// function submits the form only if all options are valid and filled out correctly.
 const submitFormIfValid = () => {
   const $payment = $("#payment").val();
   if (
@@ -319,7 +321,7 @@ const submitFormIfValid = () => {
     $zipCode.toggleClass("inputError");
     $cvv.toggleClass("inputError");
     $("form").submit();
-    console.log("form submitted");
+    alert("Form Submitted! Thanks for registering!");
     location.reload(true);
   }
 };
@@ -407,6 +409,8 @@ $("#bitcoin").hide();
 $("#payment option")
   .eq(0)
   .prop("disabled", true);
+// disables the select one option under t-shirt option
+$selectOne.prop("disabled", true);
 
 // validator messages
 $nameInput.after(`<span class="error">Must be a full name</span>`);
