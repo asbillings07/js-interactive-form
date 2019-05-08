@@ -212,7 +212,7 @@ const isValidCVV = cvv => {
   return /^[0-9]{3}$/.test(cvv);
 };
 
-// Validation rule for name
+// validation function for name
 const validateNameOnSubmit = () => {
   if (isValidName($nameInput.val()) === false) {
     $nameInput.toggleClass("inputError");
@@ -228,7 +228,7 @@ const validateNameOnSubmit = () => {
     });
   }
 };
-// Validation rule for email
+// validation function for email
 const validateEmailOnSubmit = () => {
   if ($emailInput.val() === "") {
     $emailInput.toggleClass("inputError");
@@ -244,7 +244,7 @@ const validateEmailOnSubmit = () => {
     });
   }
 };
-// Validation rule for credit card
+// validation function for credit card
 const validateCreditCardOnSubmit = () => {
   const $payment = $("#payment").val();
   if ($payment === "credit card" && $creditCard.val() === "") {
@@ -264,7 +264,7 @@ const validateCreditCardOnSubmit = () => {
     });
   }
 };
-// Validation rule for zipcode
+// validation function for zipcode
 const validateZipCodeOnSubmit = () => {
   const $payment = $("#payment").val();
   if ($payment === "credit card" && $zipCode.val() === "") {
@@ -273,16 +273,35 @@ const validateZipCodeOnSubmit = () => {
     $("form").submit(e => {
       e.preventDefault();
     });
+  } else if (
+    $payment === "credit card" &&
+    isValidZipCode($zipCode.val()) === false
+  ) {
+    $zipCode.toggleClass("inputError");
+    alert("Zipcode not formatted correctly, please try again");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
   }
+};
+// validation function for cvv
+const validateCvvOnSubmit = () => {
+  const $payment = $("#payment").val();
   if ($payment === "credit card" && $cvv.val() === "") {
     $cvv.toggleClass("inputError");
     alert("Please enter a cvv");
     $("form").submit(e => {
       e.preventDefault();
     });
+  } else if ($payment === "credit card" && isValidCVV($cvv.val()) === false) {
+    $cvv.toggleClass("inputError");
+    alert("Cvv not formatted correctly");
+    $("form").submit(e => {
+      e.preventDefault();
+    });
   }
 };
-// Validation rule for checkboxes
+// validation function for checkboxes
 const validateCheckboxesOnSubmit = () => {
   if ($checkboxes.is(":checked") === false) {
     $checkboxes.parent().css("color", "red");
@@ -302,10 +321,10 @@ const submitFormIfValid = () => {
       $payment === "paypal") ||
     $payment === "bitcoin"
   ) {
-    $nameInput.toggleClass("inputError");
-    $emailInput.toggleClass("inputError");
+    $nameInput.removeClass("inputError");
+    $emailInput.removeClass("inputError");
     $("form").submit();
-    console.log("form submitted");
+    alert("Form Submitted! Thanks for registering!");
     location.reload(true);
   } else if (
     isValidName($nameInput.val()) === true &&
@@ -315,11 +334,11 @@ const submitFormIfValid = () => {
     isValidCVV($cvv.val()) === true &&
     $checkboxes.is(":checked") === true
   ) {
-    $nameInput.toggleClass("inputError");
-    $emailInput.toggleClass("inputError");
-    $creditCard.toggleClass("inputError");
-    $zipCode.toggleClass("inputError");
-    $cvv.toggleClass("inputError");
+    $nameInput.removeClass("inputError");
+    $emailInput.removeClass("inputError");
+    $creditCard.removeClass("inputError");
+    $zipCode.removeClass("inputError");
+    $cvv.removeClass("inputError");
     $("form").submit();
     alert("Form Submitted! Thanks for registering!");
     location.reload(true);
@@ -332,6 +351,7 @@ const checkForCorrectInfo = () => {
   validateEmailOnSubmit();
   validateCreditCardOnSubmit();
   validateZipCodeOnSubmit();
+  validateCvvOnSubmit();
   validateCheckboxesOnSubmit();
   submitFormIfValid();
 };
