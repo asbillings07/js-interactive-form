@@ -14,6 +14,7 @@ const $zipCode = $("#zip");
 const $cvv = $("#cvv");
 const $colorsDiv = $("#colors-js-puns");
 const $payment = $("#payment").val();
+const $header = $("header");
 
 // js puns variables
 const $selectOne = $("#color option").eq(0);
@@ -216,13 +217,13 @@ const isValidCVV = cvv => {
 const validateNameOnSubmit = () => {
   if (isValidName($nameInput.val()) === false) {
     $nameInput.toggleClass("inputError");
-    alert("Name must be formatted correctly");
+    $nameHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
   } else if ($nameInput.val() === "") {
     $nameInput.toggleClass("inputError");
-    alert("Name field can not be blank");
+    $nameHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
@@ -232,13 +233,13 @@ const validateNameOnSubmit = () => {
 const validateEmailOnSubmit = () => {
   if ($emailInput.val() === "") {
     $emailInput.toggleClass("inputError");
-    alert("Email field can not be blank");
+    $emailHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
   } else if (isValidEmail($emailInput.val()) === false) {
     $emailInput.toggleClass("inputError");
-    alert("Email field must be formatted correctly i.e (example@email.com)");
+    $emailHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
@@ -249,7 +250,7 @@ const validateCreditCardOnSubmit = () => {
   const $payment = $("#payment").val();
   if ($payment === "credit card" && $creditCard.val() === "") {
     $creditCard.toggleClass("inputError");
-    alert("Please enter a credit card number");
+    $creditCardHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
@@ -258,7 +259,7 @@ const validateCreditCardOnSubmit = () => {
     isValidCreditCard($creditCard.val()) === false
   ) {
     $creditCard.toggleClass("inputError");
-    alert("Please enter a valid credit card number between 13 and 16 digits");
+    $creditCardHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
@@ -269,7 +270,7 @@ const validateZipCodeOnSubmit = () => {
   const $payment = $("#payment").val();
   if ($payment === "credit card" && $zipCode.val() === "") {
     $zipCode.toggleClass("inputError");
-    alert("Please enter a zip code");
+    $zipcodeHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
@@ -278,7 +279,7 @@ const validateZipCodeOnSubmit = () => {
     isValidZipCode($zipCode.val()) === false
   ) {
     $zipCode.toggleClass("inputError");
-    alert("Zipcode not formatted correctly, please try again");
+    $zipcodeHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
@@ -289,13 +290,13 @@ const validateCvvOnSubmit = () => {
   const $payment = $("#payment").val();
   if ($payment === "credit card" && $cvv.val() === "") {
     $cvv.toggleClass("inputError");
-    alert("Please enter a cvv");
+    $cvvHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
   } else if ($payment === "credit card" && isValidCVV($cvv.val()) === false) {
     $cvv.toggleClass("inputError");
-    alert("Cvv not formatted correctly");
+    $cvvHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
@@ -305,7 +306,7 @@ const validateCvvOnSubmit = () => {
 const validateCheckboxesOnSubmit = () => {
   if ($checkboxes.is(":checked") === false) {
     $checkboxes.parent().css("color", "red");
-    alert("please choose an activity");
+    $checkBoxHeader.show();
     $("form").submit(e => {
       e.preventDefault();
     });
@@ -339,6 +340,7 @@ const submitFormIfValid = () => {
     $creditCard.removeClass("inputError");
     $zipCode.removeClass("inputError");
     $cvv.removeClass("inputError");
+    $nameHeader.hide();
     $("form").submit();
     alert("Form Submitted! Thanks for registering!");
     location.reload(true);
@@ -432,7 +434,7 @@ $("#payment option")
 // disables the select one option under t-shirt option
 $selectOne.prop("disabled", true);
 
-// validator messages
+/************ validator messages *************/
 $nameInput.after(`<span class="error">Must be a full name</span>`);
 $emailInput.after(`<span class="error">Must be a valid email address</span>`);
 $creditCard.after(
@@ -440,6 +442,33 @@ $creditCard.after(
 );
 $zipCode.after(`<span class="error">Must be a valid zipcode</span>`);
 $cvv.after(`<span class="error">Must be a valid cvv</span>`);
+
+const $listHeader = $header.append(`<ul></ul>`);
+
+const $nameHeader = $listHeader.append(
+  `<li><span class='header-error'> Please enter a Full Name</span></li>`
+);
+$nameHeader.hide();
+const $emailHeader = $listHeader.append(
+  `<li><span class='header-error'> Email field must be formatted correctly i.e (example@email.com).</span></li>`
+);
+$emailHeader.hide();
+const $creditCardHeader = $listHeader.append(
+  `<li><span class='header-error'> Please enter a valid credit card number between 13 and 16 digits.</span></li>`
+);
+$creditCardHeader.hide();
+const $zipcodeHeader = $listHeader.append(
+  `<li><span class='header-error'> Please enter a correct zipcode.</span></li>`
+);
+$zipcodeHeader.hide();
+const $cvvHeader = $listHeader.append(
+  `<li><span class='header-error'> Please enter a correct Cvv.</span></li>`
+);
+$cvvHeader.hide();
+const $checkBoxHeader = $listHeader.append(
+  `<li><span class='header-error'> Please choose at least one activity option</span></li>`
+);
+$checkBoxHeader.hide();
 
 // hides all validator messages by default
 $(".error").hide();
