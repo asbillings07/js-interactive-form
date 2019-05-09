@@ -1,6 +1,9 @@
 /* ================================= 
   Base Element Styles
 ==================================== */
+.header-error {
+  color: red;
+}
 .error {
   color: red;
 }
